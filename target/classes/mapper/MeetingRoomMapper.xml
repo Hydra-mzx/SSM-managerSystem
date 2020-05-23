@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzx.crud.dao.MeetingRoomMapper">
+  <resultMap id="BaseResultMap" type="com.mzx.crud.bean.MeetingRoom">
+    <id column="mr_id" jdbcType="VARCHAR" property="mrId" />
+    <result column="mr_name" jdbcType="VARCHAR" property="mrName" />
+    <result column="mr_type" jdbcType="VARCHAR" property="mrType" />
+    <result column="mr_capacity" jdbcType="INTEGER" property="mrCapacity" />
+    <result column="tbl_meetingroomcol" jdbcType="VARCHAR" property="tblMeetingroomcol" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    mr_id, mr_name, mr_type, mr_capacity, tbl_meetingroomcol
+  </sql>
+  <select id="selectByExample" parameterType="com.mzx.crud.bean.MeetingRoomExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tbl_meetingroom
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_meetingroom
+    where mr_id = #{mrId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tbl_meetingroom
+    where mr_id = #{mrId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mzx.crud.bean.MeetingRoomExample">
+    delete from tbl_meetingroom
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mzx.crud.bean.MeetingRoom">
+    insert into tbl_meetingroom (mr_id, mr_name, mr_type, 
+      mr_capacity, tbl_meetingroomcol)
+    values (#{mrId,jdbcType=VARCHAR}, #{mrName,jdbcType=VARCHAR}, #{mrType,jdbcType=VARCHAR}, 
+      #{mrCapacity,jdbcType=INTEGER}, #{tblMeetingroomcol,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mzx.crud.bean.MeetingRoom">
+    insert into tbl_meetingroom
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mrId != null">
+        mr_id,
+      </if>
+      <if test="mrName != null">
+        mr_name,
+      </if>
+      <if test="mrType != null">
+        mr_type,
+      </if>
+      <if test="mrCapacity != null">
+        mr_capacity,
+      </if>
+      <if test="tblMeetingroomcol != null">
+        tbl_meetingroomcol,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mrId != null">
+        #{mrId,jdbcType=VARCHAR},
+      </if>
+      <if test="mrName != null">
+        #{mrName,jdbcType=VARCHAR},
+      </if>
+      <if test="mrType != null">
+        #{mrType,jdbcType=VARCHAR},
+      </if>
+      <if test="mrCapacity != null">
+        #{mrCapacity,jdbcType=INTEGER},
+      </if>
+      <if test="tblMeetingroomcol != null">
+        #{tblMeetingroomcol,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mzx.crud.bean.MeetingRoomExample" resultType="java.lang.Long">
+    select count(*) from tbl_meetingroom
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tbl_meetingroom
+    <set>
+      <if test="record.mrId != null">
+        mr_id = #{record.mrId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mrName != null">
+        mr_name = #{record.mrName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mrType != null">
+        mr_type = #{record.mrType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mrCapacity != null">
+        mr_capacity = #{record.mrCapacity,jdbcType=INTEGER},
+      </if>
+      <if test="record.tblMeetingroomcol != null">
+        tbl_meetingroomcol = #{record.tblMeetingroomcol,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tbl_meetingroom
+    set mr_id = #{record.mrId,jdbcType=VARCHAR},
+      mr_name = #{record.mrName,jdbcType=VARCHAR},
+      mr_type = #{record.mrType,jdbcType=VARCHAR},
+      mr_capacity = #{record.mrCapacity,jdbcType=INTEGER},
+      tbl_meetingroomcol = #{record.tblMeetingroomcol,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mzx.crud.bean.MeetingRoom">
+    update tbl_meetingroom
+    <set>
+      <if test="mrName != null">
+        mr_name = #{mrName,jdbcType=VARCHAR},
+      </if>
+      <if test="mrType != null">
+        mr_type = #{mrType,jdbcType=VARCHAR},
+      </if>
+      <if test="mrCapacity != null">
+        mr_capacity = #{mrCapacity,jdbcType=INTEGER},
+      </if>
+      <if test="tblMeetingroomcol != null">
+        tbl_meetingroomcol = #{tblMeetingroomcol,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where mr_id = #{mrId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mzx.crud.bean.MeetingRoom">
+    update tbl_meetingroom
+    set mr_name = #{mrName,jdbcType=VARCHAR},
+      mr_type = #{mrType,jdbcType=VARCHAR},
+      mr_capacity = #{mrCapacity,jdbcType=INTEGER},
+      tbl_meetingroomcol = #{tblMeetingroomcol,jdbcType=VARCHAR}
+    where mr_id = #{mrId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzx.crud.dao.ProjectMapper">
+  <resultMap id="BaseResultMap" type="com.mzx.crud.bean.Project">
+    <id column="pro_id" jdbcType="INTEGER" property="proId" />
+    <result column="pro_name" jdbcType="VARCHAR" property="proName" />
+    <result column="pro_time" jdbcType="DATE" property="proTime" />
+    <result column="pro_state" jdbcType="INTEGER" property="proState" />
+    <result column="pro_dept" jdbcType="INTEGER" property="proDept" />
+    <result column="pro_type" jdbcType="VARCHAR" property="proType" />
+    <result column="pro_emps" jdbcType="VARCHAR" property="proEmps" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    pro_id, pro_name, pro_time, pro_state, pro_dept, pro_type, pro_emps
+  </sql>
+  <select id="selectByExample" parameterType="com.mzx.crud.bean.ProjectExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tbl_pro
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExampleSearch" parameterType="com.mzx.crud.bean.ProjectExample" resultMap="BaseResultMap">
+    select *
+    from tbl_pro
+	<where>
+		<if test="search!=null and search!='' ">
+			AND CONCAT(pro_name) LIKE 
+			CONCAT(CONCAT('%',#{search},'%'))
+			OR CONCAT(pro_type) LIKE 
+			CONCAT(CONCAT('%',#{search},'%'))
+			OR CONCAT(pro_emps) LIKE 
+			CONCAT(CONCAT('%',#{search},'%'))
+		</if>
+	</where>
+      order by pro_id
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_pro
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tbl_pro
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mzx.crud.bean.ProjectExample">
+    delete from tbl_pro
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mzx.crud.bean.Project">
+    insert into tbl_pro (pro_id, pro_name, pro_time, 
+      pro_state, pro_dept, pro_type, 
+      pro_emps)
+    values (#{proId,jdbcType=INTEGER}, #{proName,jdbcType=VARCHAR}, #{proTime,jdbcType=DATE}, 
+      #{proState,jdbcType=INTEGER}, #{proDept,jdbcType=INTEGER}, #{proType,jdbcType=VARCHAR}, 
+      #{proEmps,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mzx.crud.bean.Project">
+    insert into tbl_pro
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="proId != null">
+        pro_id,
+      </if>
+      <if test="proName != null">
+        pro_name,
+      </if>
+      <if test="proTime != null">
+        pro_time,
+      </if>
+      <if test="proState != null">
+        pro_state,
+      </if>
+      <if test="proDept != null">
+        pro_dept,
+      </if>
+      <if test="proType != null">
+        pro_type,
+      </if>
+      <if test="proEmps != null">
+        pro_emps,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="proId != null">
+        #{proId,jdbcType=INTEGER},
+      </if>
+      <if test="proName != null">
+        #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proTime != null">
+        #{proTime,jdbcType=DATE},
+      </if>
+      <if test="proState != null">
+        #{proState,jdbcType=INTEGER},
+      </if>
+      <if test="proDept != null">
+        #{proDept,jdbcType=INTEGER},
+      </if>
+      <if test="proType != null">
+        #{proType,jdbcType=VARCHAR},
+      </if>
+      <if test="proEmps != null">
+        #{proEmps,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mzx.crud.bean.ProjectExample" resultType="java.lang.Long">
+    select count(*) from tbl_pro
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tbl_pro
+    <set>
+      <if test="record.proId != null">
+        pro_id = #{record.proId,jdbcType=INTEGER},
+      </if>
+      <if test="record.proName != null">
+        pro_name = #{record.proName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proTime != null">
+        pro_time = #{record.proTime,jdbcType=DATE},
+      </if>
+      <if test="record.proState != null">
+        pro_state = #{record.proState,jdbcType=INTEGER},
+      </if>
+      <if test="record.proDept != null">
+        pro_dept = #{record.proDept,jdbcType=INTEGER},
+      </if>
+      <if test="record.proType != null">
+        pro_type = #{record.proType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proEmps != null">
+        pro_emps = #{record.proEmps,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tbl_pro
+    set pro_id = #{record.proId,jdbcType=INTEGER},
+      pro_name = #{record.proName,jdbcType=VARCHAR},
+      pro_time = #{record.proTime,jdbcType=DATE},
+      pro_state = #{record.proState,jdbcType=INTEGER},
+      pro_dept = #{record.proDept,jdbcType=INTEGER},
+      pro_type = #{record.proType,jdbcType=VARCHAR},
+      pro_emps = #{record.proEmps,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mzx.crud.bean.Project">
+    update tbl_pro
+    <set>
+      <if test="proName != null">
+        pro_name = #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proTime != null">
+        pro_time = #{proTime,jdbcType=DATE},
+      </if>
+      <if test="proState != null">
+        pro_state = #{proState,jdbcType=INTEGER},
+      </if>
+      <if test="proDept != null">
+        pro_dept = #{proDept,jdbcType=INTEGER},
+      </if>
+      <if test="proType != null">
+        pro_type = #{proType,jdbcType=VARCHAR},
+      </if>
+      <if test="proEmps != null">
+        pro_emps = #{proEmps,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mzx.crud.bean.Project">
+    update tbl_pro
+    set pro_name = #{proName,jdbcType=VARCHAR},
+      pro_time = #{proTime,jdbcType=DATE},
+      pro_state = #{proState,jdbcType=INTEGER},
+      pro_dept = #{proDept,jdbcType=INTEGER},
+      pro_type = #{proType,jdbcType=VARCHAR},
+      pro_emps = #{proEmps,jdbcType=VARCHAR}
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </update>
+</mapper>
